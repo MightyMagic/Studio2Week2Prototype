@@ -41,7 +41,9 @@ public class MainMenu : MonoBehaviour
     void PlayClicked()
     {
         // Load the game scene
-        SceneManager.LoadScene("Game");
+        if (PlayerPrefs.HasKey("Room"))
+            PlayerPrefs.SetInt("Room", 0);
+        SceneManager.LoadScene("Game1");
         Debug.Log("Play clicked");
     }
 
@@ -52,6 +54,8 @@ public class MainMenu : MonoBehaviour
 
     void QuitGame()
     {
+        if (PlayerPrefs.HasKey("Room"))
+            PlayerPrefs.SetInt("Room", 0);
         Application.Quit();
         Debug.Log("Quit clicked");
     }

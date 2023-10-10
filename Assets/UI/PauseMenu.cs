@@ -52,9 +52,13 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
+        if (PlayerPrefs.HasKey("Room"))
+            PlayerPrefs.SetInt("Room", 0);
     }
     public void QuitGame()
     {
+        if (PlayerPrefs.HasKey("Room"))
+            PlayerPrefs.SetInt("Room", 0);
         Application.Quit();
     }
     

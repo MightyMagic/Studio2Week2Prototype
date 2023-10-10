@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TrampolineCollision : MonoBehaviour
 {
+    [SerializeField] float forceMagnitude;
     private void OnCollisionEnter(Collision collision)
     {
 
@@ -11,7 +12,7 @@ public class TrampolineCollision : MonoBehaviour
         if (collision.gameObject.GetComponent<Rigidbody>())
         {
             Vector3 forceVector = collision.transform.position;
-            collision.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 30f, ForceMode.VelocityChange);
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * forceMagnitude, ForceMode.VelocityChange);
         }
             
     }

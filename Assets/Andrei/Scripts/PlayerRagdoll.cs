@@ -6,9 +6,11 @@ public class PlayerRagdoll : MonoBehaviour
 {
     
     [SerializeField] private Transform RagdollRoot;
-    [SerializeField] private bool StartRagdoll = false;
+    [SerializeField] public bool StartRagdoll = false;
 
-    public bool RagdollActive => StartRagdoll;
+    [SerializeField] private Animator animator;
+
+   // public bool RagdollActive => StartRagdoll;
     
     public Rigidbody[] Rigidbodies;
     private CharacterJoint[] Joints;
@@ -34,7 +36,8 @@ public class PlayerRagdoll : MonoBehaviour
 
     public void EnableRagdoll()
     {
-        StartRagdoll = !StartRagdoll;
+
+        animator.enabled = false;
 
         foreach (CharacterJoint joint in Joints)
         {
@@ -55,20 +58,34 @@ public class PlayerRagdoll : MonoBehaviour
     public void EnableAnimator()
     {
 
-        StartRagdoll = !StartRagdoll;
+        animator.enabled = true;
 
         foreach (CharacterJoint joint in Joints)
         {
             joint.enableCollision = false;
         }
-       // foreach (Collider collider in Colliders)
-       // {
-       //     collider.enabled = false;
-       // }
+        foreach (Collider collider in Colliders)
+        {
+            collider.enabled = false;
+        }
         foreach (Rigidbody rigidbody in Rigidbodies)
         {
             rigidbody.detectCollisions = false;
             rigidbody.useGravity = false;
+        }
+    }
+
+    public void Switch()
+    {
+        if (StartRagdoll)
+        {
+            StartRagdoll = false;
+            EnableAnimator();
+        }
+        else
+        {
+            StartRagdoll = true;
+            EnableRagdoll();
         }
     }
 }

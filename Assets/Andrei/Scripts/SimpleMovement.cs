@@ -23,19 +23,21 @@ public class SimpleMovement : MonoBehaviour
     private Vector3 planeRotation;
 
 
-    private Rigidbody rb;
+    [SerializeField] private Rigidbody rb;
     Vector3 verticaltVector;
     Vector3 planeVector;
 
     Camera cam;
     Vector3 camOffset;
 
+    PlayerRagdoll ragdoll;
+
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
-       rb = GetComponent<Rigidbody>();
+       //rb = GetComponent<Rigidbody>();
 
         verticaltVector = Vector3.zero;
 
@@ -44,6 +46,8 @@ public class SimpleMovement : MonoBehaviour
 
         cam = Camera.main;
         camOffset = cam.transform.position - transform.position;
+
+        ragdoll = GetComponent<PlayerRagdoll>();
     }
 
     private void Update()
@@ -58,6 +62,11 @@ public class SimpleMovement : MonoBehaviour
         {
             fallTimer += Time.deltaTime;
         }
+
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            ragdoll.Switch();
+        }
     }
 
     
@@ -70,7 +79,9 @@ public class SimpleMovement : MonoBehaviour
         planeVector = planeVector.normalized;
         planeVector = transform.TransformDirection(planeVector) * movementSpeed;
 
-        verticaltVector = new Vector3(0f, FallingSpeed(), 0f);
+        //verticaltVector = new Vector3(0f, FallingSpeed(), 0f);
+
+        
 
         //rb.velocity = planeVector * Time.deltaTime + verticaltVector;
 
@@ -79,6 +90,7 @@ public class SimpleMovement : MonoBehaviour
         planeRotation = new Vector3(0f, (0.8f * Input.GetAxis("Mouse X") * rotationSensitivity), 0f);
         Quaternion deltaRotation = Quaternion.Euler(planeRotation);
         rb.MoveRotation(rb.rotation * deltaRotation);
+        //rb.angularVelocity = planeRotation;
     }
 
     void Jump()
@@ -93,6 +105,8 @@ public class SimpleMovement : MonoBehaviour
             return -1f * gravityValue * fallTimer;
         else return 0f;
     }
+
+    
 
     private void OnCollisionEnter(Collision collision)
     {
